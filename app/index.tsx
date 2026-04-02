@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/utils/config";
 import { Link } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -68,7 +69,7 @@ function padId(id: number) {
 async function fetchPage(page: number): Promise<Pokemon[]> {
   const offset = (page - 1) * PAGE_SIZE;
   const response = await fetch(
-    `https://pokeapi.co/api/v2/pokemon/?limit=${PAGE_SIZE}&offset=${offset}`,
+    `${BASE_URL}/?limit=${PAGE_SIZE}&offset=${offset}`,
   );
   const data = await response.json();
   return Promise.all(
@@ -91,9 +92,7 @@ async function fetchPage(page: number): Promise<Pokemon[]> {
 
 async function searchPokemon(query: string): Promise<Pokemon | null> {
   try {
-    const res = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${query.toLowerCase().trim()}`,
-    );
+    const res = await fetch(`${BASE_URL}/${query.toLowerCase().trim()}`);
     if (!res.ok) return null;
     const d = await res.json();
     return {
@@ -143,6 +142,8 @@ export default function Index() {
   const [searchNotFound, setSearchNotFound] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollRef = useRef<ScrollView>(null);
+
+  console.log(BASE_URL);
 
   useEffect(() => {
     loadPage(page);

@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/utils/config";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -75,7 +76,7 @@ export default function Details() {
 
   async function fetchPokemonByName(name: string) {
     try {
-      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+      const res = await fetch(`${BASE_URL}/${name}`);
       const data = await res.json();
 
       // Fetch species for flavor text
